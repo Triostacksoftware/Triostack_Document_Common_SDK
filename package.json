@@ -1,0 +1,33 @@
+{
+  "name": "proposal-agreement-generator",
+  "version": "1.0.0",
+  "description": "Generate professional proposals and legal agreements using OpenAI API",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "proposal",
+    "agreement",
+    "openai",
+    "ai",
+    "business",
+    "legal",
+    "generator"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.6.1",
+    "openai": "^4.104.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/proposal-agreement-generator.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/proposal-agreement-generator/issues"
+  },
+  "homepage": "https://github.com/yourusername/proposal-agreement-generator#readme"
+}
