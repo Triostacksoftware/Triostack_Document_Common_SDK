@@ -1,4 +1,5 @@
 import OpenAI from "openai";
+import jsPDF from "jspdf";
 
 /**
  * Generate a professional sales proposal using OpenAI API
@@ -33,7 +34,7 @@ export async function generateProposal(apiKey, projectDetails, projectName, pric
     `;
 
     const response = await client.chat.completions.create({
-      model: "gpt-4",
+      model: "gpt-5-nano",
       messages: [
         {
           role: "system",
@@ -92,7 +93,7 @@ export async function generateAgreement(apiKey, projectDetails, projectName, pri
     `;
 
     const response = await client.chat.completions.create({
-      model: "gpt-4",
+      model: "gpt-5-nano",
       messages: [
         {
           role: "system",
@@ -109,8 +110,103 @@ export async function generateAgreement(apiKey, projectDetails, projectName, pri
   }
 }
 
+/**
+ * Convert HTML content to PDF using jsPDF
+ * @param {string} htmlContent - HTML content to convert
+ * @param {string} filename - Name of the PDF file (without .pdf extension)
+ * @returns {Promise<Uint8Array>} PDF as Uint8Array
+ */
+export async function generatePDF(htmlContent, filename = "document") {
+  try {
+    // Create PDF directly with jsPDF
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    
+    // Set font and styling
+    pdf.setFont('helvetica');
+    pdf.setFontSize(12);
+    
+    // Split content into lines that fit the page width
+    const pageWidth = 190; // A4 width minus margins
+    const lines = pdf.splitTextToSize(htmlContent, pageWidth);
+    
+    let yPosition = 20;
+    const lineHeight = 7;
+    
+    // Add content to PDF
+    for (let i = 0; i < lines.length; i++) {
+      // Check if we need a new page
+      if (yPosition > 270) {
+        pdf.addPage();
+        yPosition = 20;
+      }
+      
+      pdf.text(lines[i], 10, yPosition);
+      yPosition += lineHeight;
+    }
+    
+    return pdf.output('arraybuffer');
+  } catch (error) {
+    throw new Error(`Failed to generate PDF: ${error.message}`);
+  }
+}
+
+/**
+ * Generate proposal and convert to PDF
+ * @param {string} apiKey - OpenAI API key
+ * @param {string} projectDetails - Detailed project information
+ * @param {string} projectName - Name of the project
+ * @param {string} pricing - Pricing information
+ * @param {string} extraDetails - Additional context/details for the AI
+ * @param {string} filename - Name of the PDF file (without .pdf extension)
+ * @returns {Promise<Uint8Array>} PDF as Uint8Array
+ */
+export async function generateProposalPDF(apiKey, projectDetails, projectName, pricing, extraDetails = "", filename = "proposal") {
+  try {
+    // Generate proposal content
+    const proposalContent = await generateProposal(apiKey, projectDetails, projectName, pricing, extraDetails);
+    
+    // Create formatted content for PDF
+    const formattedContent = `PROJECT PROPOSAL\n\n${projectName}\n\n${proposalContent}`;
+    
+    // Generate PDF
+    return await generatePDF(formattedContent, filename);
+  } catch (error) {
+    throw new Error(`Failed to generate proposal PDF: ${error.message}`);
+  }
+}
+
+/**
+ * Generate agreement and convert to PDF
+ * @param {string} apiKey - OpenAI API key
+ * @param {string} projectDetails - Detailed project information
+ * @param {string} projectName - Name of the project
+ * @param {string} pricing - Pricing information
+ * @param {string} partyA - Information about Party A
+ * @param {string} partyB - Information about Party B
+ * @param {string} extraDetails - Additional context/details for the AI
+ * @param {string} filename - Name of the PDF file (without .pdf extension)
+ * @returns {Promise<Uint8Array>} PDF as Uint8Array
+ */
+export async function generateAgreementPDF(apiKey, projectDetails, projectName, pricing, partyA, partyB, extraDetails = "", filename = "agreement") {
+  try {
+    // Generate agreement content
+    const agreementContent = await generateAgreement(apiKey, projectDetails, projectName, pricing, partyA, partyB, extraDetails);
+    
+    // Create formatted content for PDF
+    const formattedContent = `LEGAL AGREEMENT\n\n${projectName}\n\n${agreementContent}`;
+    
+    // Generate PDF
+    return await generatePDF(formattedContent, filename);
+  } catch (error) {
+    throw new Error(`Failed to generate agreement PDF: ${error.message}`);
+  }
+}
+
 // Default export for backward compatibility
 export default {
   generateProposal,
-  generateAgreement
+  generateAgreement,
+  generatePDF,
+  generateProposalPDF,
+  generateAgreementPDF
 };

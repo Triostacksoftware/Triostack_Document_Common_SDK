@@ -1,7 +1,7 @@
 {
-  "name": "proposal-agreement-generator",
-  "version": "1.0.0",
-  "description": "Generate professional proposals and legal agreements using OpenAI API",
+  "name": "triostack-document-generator",
+  "version": "1.1.0",
+  "description": "Generate professional proposals and legal agreements using OpenAI GPT-5 Nano API",
   "main": "index.js",
   "type": "module",
   "scripts": {
@@ -20,14 +20,15 @@
   "license": "MIT",
   "dependencies": {
     "dotenv": "^16.6.1",
-    "openai": "^4.104.0"
+    "openai": "^4.104.0",
+    "jspdf": "^2.5.1"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/proposal-agreement-generator.git"
+    "url": "https://github.com/yourusername/triostack-document-generator.git"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/proposal-agreement-generator/issues"
+    "url": "https://github.com/yourusername/triostack-document-generator/issues"
   },
-  "homepage": "https://github.com/yourusername/proposal-agreement-generator#readme"
+  "homepage": "https://github.com/yourusername/triostack-document-generator#readme"
 }
