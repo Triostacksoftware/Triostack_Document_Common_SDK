@@ -234,7 +234,7 @@ export async function generatePDF(htmlContent, filename = "document") {
     yPosition += lineHeight;
 
     // Use a much smaller max width to ensure no clipping
-    const maxAddressWidth = 150; // Reduced from 180 to 150
+    const maxAddressWidth = 110; // Further reduced from 130 to 110 for much better right margin
     const fullAddress =
       "PLOT NO 20 BLOCK H-1A SECTOR 63 Noida Gautam Buddha Nagar Uttar Pradesh India 201301";
 
@@ -253,7 +253,7 @@ export async function generatePDF(htmlContent, filename = "document") {
       const lineStartX = (210 - lineWidth) / 2; // Center each line
 
       if (i === 0) {
-        // First line: Draw label and content
+        // First line: Draw label and content with proper spacing
         pdf.setFont("helvetica", "bold");
         const labelWidth = pdf.getTextWidth("Address: ");
         const labelStartX = lineStartX - labelWidth;
@@ -262,7 +262,7 @@ export async function generatePDF(htmlContent, filename = "document") {
         pdf.setFont("helvetica", "normal");
         pdf.text(line, lineStartX, yPosition);
       } else {
-        // Continuation lines: just the content
+        // Continuation lines: just the content, centered
         pdf.setFont("helvetica", "normal");
         pdf.text(line, lineStartX, yPosition);
       }
@@ -274,13 +274,13 @@ export async function generatePDF(htmlContent, filename = "document") {
 
     yPosition += 5; // Extra spacing after address
 
-    // Add a line separator
+    // Add a line separator with proper margins
     pdf.setDrawColor(0, 0, 0);
-    pdf.line(10, yPosition, 200, yPosition);
+    pdf.line(25, yPosition, 185, yPosition); // Further reduced from 20-190 to 25-185 for even better margins
     yPosition += 15; // Space after line
 
-    // Split content into lines that fit the page width
-    const pageWidth = 190; // A4 width minus margins
+    // Split content into lines that fit the page width with proper margins
+    const pageWidth = 140; // Further reduced from 150 to 140 for even more right margin/padding
     const lines = pdf.splitTextToSize(htmlContent, pageWidth);
 
     // Add content to PDF with deep black headings
@@ -308,7 +308,7 @@ export async function generatePDF(htmlContent, filename = "document") {
 
         // Remove # symbols if present
         const headingText = line.replace(/^#+\s*/, "").trim();
-        pdf.text(headingText, 10, yPosition);
+        pdf.text(headingText, 25, yPosition); // Further increased from 20 to 25 for even better left margin
 
         // Reset styling for next line
         pdf.setFontSize(10);
@@ -320,7 +320,7 @@ export async function generatePDF(htmlContent, filename = "document") {
         pdf.setTextColor(0, 0, 0); // Black color
         pdf.setFontSize(10);
         pdf.setFont("helvetica", "normal");
-        pdf.text(line, 10, yPosition);
+        pdf.text(line, 25, yPosition); // Further increased from 20 to 25 for even better left margin
         yPosition += lineHeight;
       }
     }
