@@ -1,7 +1,7 @@
 {
   "name": "triostack-document-generator",
-  "version": "1.1.0",
-  "description": "Generate professional proposals and legal agreements using OpenAI GPT-5 Nano API",
+  "version": "1.1.1",
+  "description": "Generate professional proposals and legal agreements using OpenAI GPT-5 Nano API with support for PDF and DOC formats",
   "main": "index.js",
   "type": "module",
   "scripts": {
@@ -14,14 +14,18 @@
     "ai",
     "business",
     "legal",
-    "generator"
+    "generator",
+    "pdf",
+    "doc",
+    "docx"
   ],
   "author": "Your Name",
   "license": "MIT",
   "dependencies": {
     "dotenv": "^16.6.1",
     "openai": "^4.104.0",
-    "jspdf": "^2.5.1"
+    "jspdf": "^2.5.1",
+    "docx": "^8.5.0"
   },
   "repository": {
     "type": "git",

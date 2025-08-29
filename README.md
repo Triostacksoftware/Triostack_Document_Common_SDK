@@ -1,17 +1,19 @@
 # Triostack Document Generator
 
-A powerful npm package for generating professional sales proposals and legal agreements using OpenAI's GPT-5 Nano API.
+A powerful npm package for generating professional sales proposals and legal agreements using OpenAI's GPT-5 Nano API with support for both PDF and DOC formats.
 
 ## Features
 
 - 🚀 **Proposal Generation**: Create compelling sales proposals with AI assistance
 - ⚖️ **Agreement Generation**: Generate comprehensive legal agreements between parties
 - 📄 **PDF Generation**: Convert proposals and agreements to professional PDF documents
+- 📝 **DOC Generation**: Convert proposals and agreements to Microsoft Word (.docx) documents
 - 🤖 **AI-Powered**: Uses OpenAI's latest GPT-5 Nano for high-quality content generation
 - 📝 **Customizable**: Add extra details and context for tailored outputs
 - 🔒 **Secure**: Pass your own API key for complete control
 - 📦 **Lightweight**: Minimal dependencies, easy to integrate
 - 🆕 **Latest Model**: Leverages GPT-5 Nano for improved performance and accuracy
+- 🔄 **Dual Format**: Generate documents in both PDF and DOC formats simultaneously
 
 ## Installation
 
@@ -22,7 +24,14 @@ npm install triostack-document-generator
 ## Quick Start
 
 ```javascript
-import { generateProposal, generateAgreement } from 'triostack-document-generator';
+import { 
+  generateProposal, 
+  generateAgreement,
+  generateProposalPDF,
+  generateProposalDOC,
+  generateAgreementPDF,
+  generateAgreementDOC
+} from 'triostack-document-generator';
 
 // Your OpenAI API key
 const apiKey = 'your-openai-api-key-here';
@@ -50,6 +59,10 @@ const agreement = await generateAgreement(
 // Generate PDF versions
 const proposalPDF = await generateProposalPDF(apiKey, details, name, pricing, extra);
 const agreementPDF = await generateAgreementPDF(apiKey, details, name, pricing, partyA, partyB, extra);
+
+// Generate DOC versions
+const proposalDOC = await generateProposalDOC(apiKey, details, name, pricing, extra);
+const agreementDOC = await generateAgreementDOC(apiKey, details, name, pricing, partyA, partyB, extra);
 ```
 
 ## API Reference
@@ -135,6 +148,35 @@ const proposalPDF = await generateProposalPDF(
 fs.writeFileSync('proposal.pdf', Buffer.from(proposalPDF));
 ```
 
+### `generateProposalDOC(apiKey, projectDetails, projectName, pricing, extraDetails?, filename?)`
+
+Generates a professional sales proposal and converts it to Microsoft Word (.docx) format.
+
+**Parameters:**
+- `apiKey` (string): Your OpenAI API key
+- `projectDetails` (string): Detailed description of the project
+- `projectName` (string): Name of the project
+- `pricing` (string): Pricing information
+- `extraDetails` (string, optional): Additional context for the AI
+- `filename` (string, optional): Name for the DOC file (without .docx extension)
+
+**Returns:** Promise<Uint8Array> - DOC as Uint8Array buffer
+
+**Example:**
+```javascript
+const proposalDOC = await generateProposalDOC(
+  'sk-your-api-key',
+  'Custom CRM system with advanced reporting and mobile app',
+  'Enterprise CRM Solution',
+  '$25,000 - $35,000',
+  'Client is a growing startup with 50+ employees. Need scalable solution.',
+  'enterprise-crm-proposal'
+);
+
+// Save DOC to file
+fs.writeFileSync('proposal.docx', Buffer.from(proposalDOC));
+```
+
 ### `generateAgreementPDF(apiKey, projectDetails, projectName, pricing, partyA, partyB, extraDetails?, filename?)`
 
 Generates a comprehensive legal agreement and converts it to PDF format.
@@ -166,6 +208,39 @@ const agreementPDF = await generateAgreementPDF(
 
 // Save PDF to file
 fs.writeFileSync('agreement.pdf', Buffer.from(agreementPDF));
+```
+
+### `generateAgreementDOC(apiKey, projectDetails, projectName, pricing, partyA, partyB, extraDetails?, filename?)`
+
+Generates a comprehensive legal agreement and converts it to Microsoft Word (.docx) format.
+
+**Parameters:**
+- `apiKey` (string): Your OpenAI API key
+- `projectDetails` (string): Detailed description of the project
+- `projectName` (string): Name of the project
+- `pricing` (string): Pricing information
+- `partyA` (string): Information about Party A (name, details, etc.)
+- `partyB` (string): Information about Party B (name, details, etc.)
+- `extraDetails` (string, optional): Additional context for the AI
+- `filename` (string, optional): Name for the DOC file (without .docx extension)
+
+**Returns:** Promise<Uint8Array> - DOC as Uint8Array buffer
+
+**Example:**
+```javascript
+const agreementDOC = await generateAgreementDOC(
+  'sk-your-api-key',
+  'Software development and maintenance services',
+  'Cloud Platform Development',
+  '$100,000 with milestone payments',
+  'Acme Corporation, 123 Main St, New York, NY 10001',
+  'TechSolutions Inc., 456 Innovation Dr, Austin, TX 78701',
+  'Project includes 12 months of development and 24 months of support',
+  'cloud-platform-agreement'
+);
+
+// Save DOC to file
+fs.writeFileSync('agreement.docx', Buffer.from(agreementDOC));
 ```
 
 ## Generated Content Structure
@@ -234,9 +309,11 @@ This package uses OpenAI's latest GPT-5 Nano model, which provides:
 - **Faster Response**: Optimized for quick document generation
 - **Cost Effective**: Efficient pricing for business applications
 
-## PDF Generation
+## Document Generation
 
-The package includes built-in PDF generation capabilities:
+The package includes built-in document generation capabilities for both PDF and DOC formats:
+
+### PDF Generation
 - **Direct PDF Creation**: Convert AI-generated content to professional PDFs
 - **Customizable Formatting**: Professional layout with proper margins and typography
 - **Multi-page Support**: Automatic page breaks for long documents
@@ -249,10 +326,46 @@ The package includes built-in PDF generation capabilities:
 - Automatic page breaks for long content
 - Clean, business-ready formatting
 
+### DOC Generation
+- **Microsoft Word Format**: Generate .docx files compatible with Word, Google Docs, and other editors
+- **Professional Styling**: Proper headings, paragraphs, and formatting
+- **Customizable Layout**: Professional document structure with titles and sections
+- **Cross-Platform**: Works on Windows, Mac, and Linux
+- **Buffer Output**: Get DOC as Uint8Array for flexible file handling
+
+**DOC Features:**
+- Professional document structure with headings
+- Proper paragraph spacing and formatting
+- Microsoft Word compatible (.docx format)
+- Clean, editable business documents
+
+## Examples
+
+The package includes several example files to help you get started:
+
+### `example.js`
+Basic examples for generating proposals and agreements as text.
+
+### `example-pdf.js`
+Examples for generating PDF documents.
+
+### `example-both-formats.js`
+Examples for generating documents in both PDF and DOC formats simultaneously.
+
+**Run the examples:**
+```bash
+# Generate PDFs only
+node example-pdf.js
+
+# Generate both PDF and DOC formats
+node example-both-formats.js
+```
+
 ## Dependencies
 
 - `openai`: Official OpenAI Node.js client (supports GPT-5 Nano)
-- `jspdf`: PDF generation library for Node.js
+- `jspdf`: PDF generation library for Node.js (fixed constructor issue)
+- `docx`: Microsoft Word document generation library
 - `dotenv`: Environment variable management (optional)
 
 ## Contributing

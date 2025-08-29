@@ -1,5 +1,6 @@
 import OpenAI from "openai";
-import jsPDF from "jspdf";
+import { jsPDF } from "jspdf";
+import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType } from "docx";
 
 /**
  * Generate a professional sales proposal using OpenAI API
@@ -151,6 +152,51 @@ export async function generatePDF(htmlContent, filename = "document") {
 }
 
 /**
+ * Convert content to DOC format using docx library
+ * @param {string} content - Content to convert
+ * @param {string} filename - Name of the DOC file (without .docx extension)
+ * @returns {Promise<Uint8Array>} DOC as Uint8Array
+ */
+export async function generateDOC(content, filename = "document") {
+  try {
+    // Split content into paragraphs
+    const paragraphs = content.split('\n\n').filter(p => p.trim());
+    
+    // Create document structure
+    const doc = new Document({
+      sections: [{
+        properties: {},
+        children: [
+          new Paragraph({
+            text: filename.toUpperCase(),
+            heading: HeadingLevel.HEADING_1,
+            alignment: AlignmentType.CENTER,
+            spacing: { after: 400 }
+          }),
+          ...paragraphs.map(paragraph => 
+            new Paragraph({
+              children: [
+                new TextRun({
+                  text: paragraph.trim(),
+                  size: 24
+                })
+              ],
+              spacing: { after: 200 }
+            })
+          )
+        ]
+      }]
+    });
+
+    // Generate DOC file
+    const buffer = await Packer.toBuffer(doc);
+    return buffer;
+  } catch (error) {
+    throw new Error(`Failed to generate DOC: ${error.message}`);
+  }
+}
+
+/**
  * Generate proposal and convert to PDF
  * @param {string} apiKey - OpenAI API key
  * @param {string} projectDetails - Detailed project information
@@ -202,11 +248,66 @@ export async function generateAgreementPDF(apiKey, projectDetails, projectName, 
   }
 }
 
+/**
+ * Generate proposal and convert to DOC
+ * @param {string} apiKey - OpenAI API key
+ * @param {string} projectDetails - Detailed project information
+ * @param {string} projectName - Name of the project
+ * @param {string} pricing - Pricing information
+ * @param {string} extraDetails - Additional context/details for the AI
+ * @param {string} filename - Name of the DOC file (without .docx extension)
+ * @returns {Promise<Uint8Array>} DOC as Uint8Array
+ */
+export async function generateProposalDOC(apiKey, projectDetails, projectName, pricing, extraDetails = "", filename = "proposal") {
+  try {
+    // Generate proposal content
+    const proposalContent = await generateProposal(apiKey, projectDetails, projectName, pricing, extraDetails);
+    
+    // Create formatted content for DOC
+    const formattedContent = `PROJECT PROPOSAL\n\n${projectName}\n\n${proposalContent}`;
+    
+    // Generate DOC
+    return await generateDOC(formattedContent, filename);
+  } catch (error) {
+    throw new Error(`Failed to generate proposal DOC: ${error.message}`);
+  }
+}
+
+/**
+ * Generate agreement and convert to DOC
+ * @param {string} apiKey - OpenAI API key
+ * @param {string} projectDetails - Detailed project information
+ * @param {string} projectName - Name of the project
+ * @param {string} pricing - Pricing information
+ * @param {string} partyA - Information about Party A
+ * @param {string} partyB - Information about Party B
+ * @param {string} extraDetails - Additional context/details for the AI
+ * @param {string} filename - Name of the DOC file (without .docx extension)
+ * @returns {Promise<Uint8Array>} DOC as Uint8Array
+ */
+export async function generateAgreementDOC(apiKey, projectDetails, projectName, pricing, partyA, partyB, extraDetails = "", filename = "agreement") {
+  try {
+    // Generate agreement content
+    const agreementContent = await generateAgreement(apiKey, projectDetails, projectName, pricing, partyA, partyB, extraDetails);
+    
+    // Create formatted content for DOC
+    const formattedContent = `LEGAL AGREEMENT\n\n${projectName}\n\n${agreementContent}`;
+    
+    // Generate DOC
+    return await generateDOC(formattedContent, filename);
+  } catch (error) {
+    throw new Error(`Failed to generate agreement DOC: ${error.message}`);
+  }
+}
+
 // Default export for backward compatibility
 export default {
   generateProposal,
   generateAgreement,
   generatePDF,
+  generateDOC,
   generateProposalPDF,
-  generateAgreementPDF
+  generateProposalDOC,
+  generateAgreementPDF,
+  generateAgreementDOC
 };
