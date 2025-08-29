@@ -1,4 +1,4 @@
-# Triostack Document Generator
+# Triostack Document SDK
 
 A powerful npm package for generating professional sales proposals and legal agreements using OpenAI's GPT-5 Nano API with support for both PDF and DOC formats.
 
@@ -18,7 +18,7 @@ A powerful npm package for generating professional sales proposals and legal agr
 ## Installation
 
 ```bash
-npm install triostack-document-generator
+npm install triostack-document-sdk
 ```
 
 ## Quick Start
@@ -31,7 +31,7 @@ import {
   generateProposalDOC,
   generateAgreementPDF,
   generateAgreementDOC
-} from 'triostack-document-generator';
+} from 'triostack-document-sdk';
 
 // Your OpenAI API key
 const apiKey = 'your-openai-api-key-here';
