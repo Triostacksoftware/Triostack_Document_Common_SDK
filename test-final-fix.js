@@ -48,12 +48,18 @@ NEXT STEPS
     );
     console.log("   - Company details with NO CLIPPING:");
     console.log("     * CIN and Phone on first line (centered)");
-    console.log("     * Address on second line (centered, complete text visible)");
-    console.log("     * COMPLETE address: PLOT NO 20 BLOCK H-1A SECTOR 63 Noida Gautam Buddha Nagar Uttar Pradesh India 201301");
+    console.log(
+      "     * Address on second line (centered, complete text visible)"
+    );
+    console.log(
+      "     * COMPLETE address: PLOT NO 20 BLOCK H-1A SECTOR 63 Noida Gautam Buddha Nagar Uttar Pradesh India 201301"
+    );
     console.log("   - INVESTMENT section with NO CLIPPING:");
     console.log("     * Complete text: 'milestone-based invoicing structure'");
     console.log("     * No text cut off at 'milestone-base'");
-    console.log("   - Even more generous margins (140mm page width, 25mm left margin)");
+    console.log(
+      "   - Even more generous margins (140mm page width, 25mm left margin)"
+    );
     console.log("   - Proper text wrapping for all content");
     console.log("   - Professional formatting throughout");
   } catch (error) {

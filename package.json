@@ -1,6 +1,6 @@
 {
   "name": "triostack-document-sdk",
-  "version": "1.1.4",
+  "version": "1.2.2",
   "description": "Generate professional proposals and legal agreements using OpenAI API with support for PDF and DOC formats",
   "main": "index.js",
   "type": "module",
@@ -29,10 +29,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/triostack-document-sdk.git"
+    "url": "https://github.com/Triostacksoftware/Triostack-Document-SDK"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/triostack-document-sdk/issues"
+    "url": "https://github.com/Triostacksoftware/Triostack-Document-SDK"
   },
-  "homepage": "https://github.com/yourusername/triostack-document-sdk#readme"
+  "homepage": "https://github.com/Triostacksoftware/Triostack-Document-SDK"
 }

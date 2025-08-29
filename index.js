@@ -169,24 +169,24 @@ export async function generatePDF(htmlContent, filename = "document") {
     yPosition += lineHeight + 8; // Extra spacing after company name
 
     // Add company details below (centered with separators)
-    pdf.setFontSize(10);
+    // Set consistent font size for all company details
+    pdf.setFontSize(8);
     pdf.setFont("helvetica", "normal");
 
     // Combined company details with separators (labels bold, content normal)
     const detailsParts = [
       { label: "CIN:", content: "U62012UP2025PTC226106" },
       { label: "Phone:", content: "+91 9211941924" },
-      {
-        label: "Address:",
-        content:
-          "PLOT NO 20 BLOCK H-1A SECTOR 63 Noida Gautam Buddha Nagar Uttar Pradesh India 201301",
-      },
+      { label: "Website:", content: "www.triostack.in" },
+      { label: "Email:", content: "info@triostack.in" },
+             {
+         label: "Address:",
+         content:
+           "IIMT LBF, Plot No. 19, 20, near IIMT Group of Colleges, Knowledge Park III, Greater Noida, Uttar Pradesh 201310",
+       },
     ];
 
-    // ULTIMATE FIX: Use a much smaller max width and force proper centering
-    pdf.setFontSize(8);
-
-    // Line 1: CIN and Phone (centered)
+    // Line 1: CIN, Phone, Website (centered)
     pdf.setFont("helvetica", "bold");
     const cinLabelWidth = pdf.getTextWidth("CIN: ");
     pdf.setFont("helvetica", "normal");
@@ -197,13 +197,21 @@ export async function generatePDF(htmlContent, filename = "document") {
     pdf.setFont("helvetica", "normal");
     const phoneContentWidth = pdf.getTextWidth("+91 9211941924");
 
+    pdf.setFont("helvetica", "bold");
+    const websiteLabelWidth = pdf.getTextWidth("Website: ");
+    pdf.setFont("helvetica", "normal");
+    const websiteContentWidth = pdf.getTextWidth("www.triostack.in");
+
     const separatorWidth = pdf.getTextWidth(" | ");
     const totalFirstLineWidth =
       cinLabelWidth +
       cinContentWidth +
       separatorWidth +
       phoneLabelWidth +
-      phoneContentWidth;
+      phoneContentWidth +
+      separatorWidth +
+      websiteLabelWidth +
+      websiteContentWidth;
 
     // Center the first line
     const firstLineStartX = (210 - totalFirstLineWidth) / 2;
@@ -229,14 +237,47 @@ export async function generatePDF(htmlContent, filename = "document") {
 
     pdf.setFont("helvetica", "normal");
     pdf.text("+91 9211941924", currentX, yPosition);
+    currentX += phoneContentWidth;
 
-    // Line 2: Address (centered) - ULTIMATE FIX
+    // Add separator
+    pdf.text(" | ", currentX, yPosition);
+    currentX += separatorWidth;
+
+    // Draw Website
+    pdf.setFont("helvetica", "bold");
+    pdf.text("Website: ", currentX, yPosition);
+    currentX += websiteLabelWidth;
+
+    pdf.setFont("helvetica", "normal");
+    pdf.text("www.triostack.in", currentX, yPosition);
+
+    // Line 2: Email (centered)
     yPosition += lineHeight;
 
-    // Use a much smaller max width to ensure no clipping
-    const maxAddressWidth = 110; // Further reduced from 130 to 110 for much better right margin
-    const fullAddress =
-      "PLOT NO 20 BLOCK H-1A SECTOR 63 Noida Gautam Buddha Nagar Uttar Pradesh India 201301";
+    pdf.setFont("helvetica", "bold");
+    const emailLabelWidth = pdf.getTextWidth("Email: ");
+    pdf.setFont("helvetica", "normal");
+    const emailContentWidth = pdf.getTextWidth("info@triostack.in");
+
+    const totalSecondLineWidth = emailLabelWidth + emailContentWidth;
+    const secondLineStartX = (210 - totalSecondLineWidth) / 2;
+
+    pdf.setFont("helvetica", "bold");
+    pdf.text("Email: ", secondLineStartX, yPosition);
+    pdf.setFont("helvetica", "normal");
+    pdf.text(
+      "info@triostack.in",
+      secondLineStartX + emailLabelWidth,
+      yPosition
+    );
+
+    // Line 3: Address (centered) - ULTIMATE FIX
+    yPosition += lineHeight;
+
+         // Use a much smaller max width to ensure no clipping
+     const maxAddressWidth = 110; // Further reduced from 130 to 110 for much better right margin
+     const fullAddress =
+       "IIMT LBF, Plot No. 19, 20, near IIMT Group of Colleges, Knowledge Park III, Greater Noida, Uttar Pradesh 201310";
 
     // Split the address content only (without the label)
     const addressLines = pdf.splitTextToSize(fullAddress, maxAddressWidth);
@@ -360,7 +401,7 @@ export async function generateDOC(content, filename = "document") {
               alignment: AlignmentType.CENTER,
               spacing: { after: 300 },
             }),
-            // Company details with separators (bold labels)
+            // Company details with separators (bold labels) - Line 1
             new Paragraph({
               children: [
                 new TextRun({
@@ -384,15 +425,42 @@ export async function generateDOC(content, filename = "document") {
                   bold: false,
                 }),
                 new TextRun({
-                  text: " | Address: ",
+                  text: " | Website: ",
                   size: 18,
                   bold: true,
                 }),
                 new TextRun({
-                  text: "PLOT NO 20 BLOCK H-1A SECTOR 63 Noida Gautam Buddha Nagar Uttar Pradesh India 201301",
+                  text: "www.triostack.in",
                   size: 18,
                   bold: false,
                 }),
+              ],
+              alignment: AlignmentType.CENTER,
+              spacing: { after: 200 },
+            }),
+            // Company details - Line 2
+            new Paragraph({
+              children: [
+                new TextRun({
+                  text: "Email: ",
+                  size: 18,
+                  bold: true,
+                }),
+                new TextRun({
+                  text: "info@triostack.in",
+                  size: 18,
+                  bold: false,
+                }),
+                new TextRun({
+                  text: " | Address: ",
+                  size: 18,
+                  bold: true,
+                }),
+                                   new TextRun({
+                     text: "IIMT LBF, Plot No. 19, 20, near IIMT Group of Colleges, Knowledge Park III, Greater Noida, Uttar Pradesh 201310",
+                     size: 18,
+                     bold: false,
+                   }),
               ],
               alignment: AlignmentType.CENTER,
               spacing: { after: 400 },
