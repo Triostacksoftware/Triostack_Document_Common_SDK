@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Triostack Document SDK - Test UI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .test-section {
+            margin-bottom: 40px;
+            padding: 25px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            background: #f8f9fa;
+        }
+
+        .test-section h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            background: white;
+            border-left: 4px solid #3498db;
+        }
+
+        .result.success {
+            border-left-color: #27ae60;
+            background: #d5f4e6;
+        }
+
+        .result.error {
+            border-left-color: #e74c3c;
+            background: #fadbd8;
+        }
+
+        .result pre {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .status.success {
+            background: #27ae60;
+            color: white;
+        }
+
+        .status.error {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .status.warning {
+            background: #f39c12;
+            color: white;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .module-info {
+            background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .module-info h3 {
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .function-list {
+            list-style: none;
+            text-align: left;
+        }
+
+        .function-list li {
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .function-list li:last-child {
+            border-bottom: none;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .download-link {
+            display: inline-block;
+            background: #27ae60;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .download-link:hover {
+            background: #229954;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧪 Triostack Document SDK</h1>
+            <p>Test UI for CommonJS Module Verification</p>
+        </div>
+
+        <div class="content">
+            <!-- Module Test Section -->
+            <div class="test-section">
+                <h2>🔧 Module Status Check</h2>
+                <button class="btn" onclick="testModule()">Test Module Loading</button>
+                <div id="moduleResult" class="result hidden"></div>
+            </div>
+
+            <!-- Proposal Generation Section -->
+            <div class="test-section">
+                <h2>📋 Proposal Generation</h2>
+                <form id="proposalForm">
+                    <div class="form-group">
+                        <label for="proposalApiKey">OpenAI API Key:</label>
+                        <input type="password" id="proposalApiKey" placeholder="sk-..." required>
+                    </div>
+                    <div class="form-group">
+                        <label for="projectDetails">Project Details:</label>
+                        <textarea id="projectDetails" placeholder="Describe the project..." required>E-commerce platform development with advanced analytics, mobile optimization, and payment gateway integration</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="projectName">Project Name:</label>
+                        <input type="text" id="projectName" placeholder="Project Name" value="Acme Corp E-commerce Redesign" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="pricing">Pricing:</label>
+                        <input type="text" id="pricing" placeholder="Pricing information" value="$75,000 - $95,000" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="extraDetails">Extra Details (Optional):</label>
+                        <textarea id="extraDetails" placeholder="Additional context...">Client is experiencing 30% cart abandonment rate. Need improved UX, mobile-first design, and advanced analytics dashboard.</textarea>
+                    </div>
+                    <button type="button" class="btn" onclick="generateProposal()">Generate Proposal</button>
+                    <button type="button" class="btn btn-success" onclick="generateProposalPDF()">Generate Proposal PDF</button>
+                </form>
+                <div id="proposalResult" class="result hidden"></div>
+            </div>
+
+            <!-- Agreement Generation Section -->
+            <div class="test-section">
+                <h2>⚖️ Agreement Generation</h2>
+                <form id="agreementForm">
+                    <div class="form-group">
+                        <label for="agreementApiKey">OpenAI API Key:</label>
+                        <input type="password" id="agreementApiKey" placeholder="sk-..." required>
+                    </div>
+                    <div class="form-group">
+                        <label for="agreementProjectDetails">Project Details:</label>
+                        <textarea id="agreementProjectDetails" placeholder="Describe the project..." required>Custom software development project including web application, mobile app, and API development</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="agreementProjectName">Project Name:</label>
+                        <input type="text" id="agreementProjectName" placeholder="Project Name" value="TechCorp Enterprise Platform" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="agreementPricing">Pricing:</label>
+                        <input type="text" id="agreementPricing" placeholder="Pricing information" value="$150,000 with 30% upfront, 40% at milestone, 30% on completion" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="partyA">Party A:</label>
+                        <input type="text" id="partyA" placeholder="Party A details" value="TechCorp Inc., 123 Business Street, New York, NY 10001, represented by John Smith, CEO" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="partyB">Party B:</label>
+                        <input type="text" id="partyB" placeholder="Party B details" value="DevStudio LLC, 456 Technology Avenue, San Francisco, CA 94105, represented by Sarah Johnson, Managing Director" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="agreementExtraDetails">Extra Details (Optional):</label>
+                        <textarea id="agreementExtraDetails" placeholder="Additional context...">Project timeline: 8 months. Includes 12 months of post-launch support and maintenance. Client will provide design assets and content.</textarea>
+                    </div>
+                    <button type="button" class="btn" onclick="generateAgreement()">Generate Agreement</button>
+                    <button type="button" class="btn btn-success" onclick="generateAgreementPDF()">Generate Agreement PDF</button>
+                </form>
+                <div id="agreementResult" class="result hidden"></div>
+            </div>
+
+            <!-- PDF/DOC Generation Section -->
+            <div class="test-section">
+                <h2>📄 Document Generation</h2>
+                <div class="form-group">
+                    <label for="documentContent">Content:</label>
+                    <textarea id="documentContent" placeholder="Enter content to convert to PDF/DOC..." required>Test Document
+
+EXECUTIVE SUMMARY
+This is a test document to verify CommonJS conversion.
+
+PROJECT OVERVIEW
+Testing the functionality of the converted package.
+
+DELIVERABLES
+- PDF generation
+- DOC generation
+- CommonJS compatibility</textarea>
+                </div>
+                <div class="form-group">
+                    <label for="documentFilename">Filename (without extension):</label>
+                    <input type="text" id="documentFilename" placeholder="document" value="test-document">
+                </div>
+                <button type="button" class="btn btn-warning" onclick="generatePDF()">Generate PDF</button>
+                <button type="button" class="btn btn-warning" onclick="generateDOC()">Generate DOC</button>
+                <div id="documentResult" class="result hidden"></div>
+            </div>
+
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Processing...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Test module loading
+        async function testModule() {
+            showLoading(true);
+            try {
+                const response = await fetch('/api/test');
+                const result = await response.json();
+                
+                const resultDiv = document.getElementById('moduleResult');
+                resultDiv.className = `result ${result.success ? 'success' : 'error'}`;
+                
+                if (result.success) {
+                    resultDiv.innerHTML = `
+                        <div class="status success">✅ Module Loaded Successfully</div>
+                        <h3>Available Functions (${result.totalFunctions}/${result.expectedFunctions}):</h3>
+                        <ul>
+                            ${result.availableFunctions.map(func => `<li>✅ ${func}</li>`).join('')}
+                        </ul>
+                        <p><strong>Message:</strong> ${result.message}</p>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="status error">❌ Module Test Failed</div>
+                        <p><strong>Error:</strong> ${result.error}</p>
+                    `;
+                }
+                resultDiv.classList.remove('hidden');
+            } catch (error) {
+                showError('moduleResult', 'Failed to test module: ' + error.message);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // Generate proposal
+        async function generateProposal() {
+            const formData = getProposalFormData();
+            if (!formData) return;
+
+            showLoading(true);
+            try {
+                const response = await fetch('/api/generate-proposal', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+                showResult('proposalResult', result, result.data);
+            } catch (error) {
+                showError('proposalResult', 'Failed to generate proposal: ' + error.message);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // Generate proposal PDF
+        async function generateProposalPDF() {
+            const formData = getProposalFormData();
+            if (!formData) return;
+
+            showLoading(true);
+            try {
+                const response = await fetch('/api/generate-proposal-pdf', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `${formData.filename || 'proposal'}.pdf`;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    document.body.removeChild(a);
+                    
+                    showResult('proposalResult', { success: true, message: 'PDF generated and downloaded successfully!' });
+                } else {
+                    const result = await response.json();
+                    showError('proposalResult', result.error || 'Failed to generate PDF');
+                }
+            } catch (error) {
+                showError('proposalResult', 'Failed to generate PDF: ' + error.message);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // Generate agreement
+        async function generateAgreement() {
+            const formData = getAgreementFormData();
+            if (!formData) return;
+
+            showLoading(true);
+            try {
+                const response = await fetch('/api/generate-agreement', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+                showResult('agreementResult', result, result.data);
+            } catch (error) {
+                showError('agreementResult', 'Failed to generate agreement: ' + error.message);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // Generate agreement PDF
+        async function generateAgreementPDF() {
+            const formData = getAgreementFormData();
+            if (!formData) return;
+
+            showLoading(true);
+            try {
+                const response = await fetch('/api/generate-agreement-pdf', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `${formData.filename || 'agreement'}.pdf`;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    document.body.removeChild(a);
+                    
+                    showResult('agreementResult', { success: true, message: 'PDF generated and downloaded successfully!' });
+                } else {
+                    const result = await response.json();
+                    showError('agreementResult', result.error || 'Failed to generate PDF');
+                }
+            } catch (error) {
+                showError('agreementResult', 'Failed to generate PDF: ' + error.message);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // Generate PDF
+        async function generatePDF() {
+            const content = document.getElementById('documentContent').value;
+            const filename = document.getElementById('documentFilename').value;
+
+            if (!content) {
+                alert('Please enter content');
+                return;
+            }
+
+            showLoading(true);
+            try {
+                const response = await fetch('/api/generate-pdf', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ content, filename })
+                });
+
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `${filename || 'document'}.pdf`;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    document.body.removeChild(a);
+                    
+                    showResult('documentResult', { success: true, message: 'PDF generated and downloaded successfully!' });
+                } else {
+                    const result = await response.json();
+                    showError('documentResult', result.error || 'Failed to generate PDF');
+                }
+            } catch (error) {
+                showError('documentResult', 'Failed to generate PDF: ' + error.message);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // Generate DOC
+        async function generateDOC() {
+            const content = document.getElementById('documentContent').value;
+            const filename = document.getElementById('documentFilename').value;
+
+            if (!content) {
+                alert('Please enter content');
+                return;
+            }
+
+            showLoading(true);
+            try {
+                const response = await fetch('/api/generate-doc', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ content, filename })
+                });
+
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `${filename || 'document'}.docx`;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    document.body.removeChild(a);
+                    
+                    showResult('documentResult', { success: true, message: 'DOC generated and downloaded successfully!' });
+                } else {
+                    const result = await response.json();
+                    showError('documentResult', result.error || 'Failed to generate DOC');
+                }
+            } catch (error) {
+                showError('documentResult', 'Failed to generate DOC: ' + error.message);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // Helper functions
+        function getProposalFormData() {
+            const apiKey = document.getElementById('proposalApiKey').value;
+            const projectDetails = document.getElementById('projectDetails').value;
+            const projectName = document.getElementById('projectName').value;
+            const pricing = document.getElementById('pricing').value;
+            const extraDetails = document.getElementById('extraDetails').value;
+
+            if (!apiKey || !projectDetails || !projectName || !pricing) {
+                alert('Please fill in all required fields');
+                return null;
+            }
+
+            return { apiKey, projectDetails, projectName, pricing, extraDetails };
+        }
+
+        function getAgreementFormData() {
+            const apiKey = document.getElementById('agreementApiKey').value;
+            const projectDetails = document.getElementById('agreementProjectDetails').value;
+            const projectName = document.getElementById('agreementProjectName').value;
+            const pricing = document.getElementById('agreementPricing').value;
+            const partyA = document.getElementById('partyA').value;
+            const partyB = document.getElementById('partyB').value;
+            const extraDetails = document.getElementById('agreementExtraDetails').value;
+
+            if (!apiKey || !projectDetails || !projectName || !pricing || !partyA || !partyB) {
+                alert('Please fill in all required fields');
+                return null;
+            }
+
+            return { apiKey, projectDetails, projectName, pricing, partyA, partyB, extraDetails };
+        }
+
+        function showResult(elementId, result, data = null) {
+            const resultDiv = document.getElementById(elementId);
+            resultDiv.className = `result ${result.success ? 'success' : 'error'}`;
+            
+            if (result.success) {
+                resultDiv.innerHTML = `
+                    <div class="status success">✅ ${result.message}</div>
+                    ${data ? `<pre>${data}</pre>` : ''}
+                `;
+            } else {
+                resultDiv.innerHTML = `
+                    <div class="status error">❌ ${result.message}</div>
+                    ${result.error ? `<p><strong>Error:</strong> ${result.error}</p>` : ''}
+                `;
+            }
+            resultDiv.classList.remove('hidden');
+        }
+
+        function showError(elementId, message) {
+            const resultDiv = document.getElementById(elementId);
+            resultDiv.className = 'result error';
+            resultDiv.innerHTML = `
+                <div class="status error">❌ Error</div>
+                <p><strong>Error:</strong> ${message}</p>
+            `;
+            resultDiv.classList.remove('hidden');
+        }
+
+        function showLoading(show) {
+            const loading = document.getElementById('loading');
+            loading.style.display = show ? 'block' : 'none';
+        }
+
+        // Auto-test module on page load
+        window.addEventListener('load', () => {
+            setTimeout(testModule, 1000);
+        });
+    </script>
+</body>
+</html>
