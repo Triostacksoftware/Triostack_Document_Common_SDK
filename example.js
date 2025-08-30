@@ -1,5 +1,5 @@
-import { generateProposal, generateAgreement } from './index.js';
-import dotenv from 'dotenv';
+const { generateProposal, generateAgreement } = require('./index.js');
+const dotenv = require('dotenv');
 
 // Load environment variables (optional)
 dotenv.config();
@@ -82,8 +82,8 @@ async function runExamples() {
 }
 
 // Run if this file is executed directly
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (require.main === module) {
   runExamples();
 }
 
-export { exampleProposal, exampleAgreement, exampleMinimal, runExamples };
+module.exports = { exampleProposal, exampleAgreement, exampleMinimal, runExamples };

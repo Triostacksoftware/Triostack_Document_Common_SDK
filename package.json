@@ -1,9 +1,8 @@
 {
-  "name": "triostack-document-sdk",
-  "version": "1.2.2",
+  "name": "triostack-document-common-sdk",
+  "version": "1.0.0",
   "description": "Generate professional proposals and legal agreements using OpenAI API with support for PDF and DOC formats",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

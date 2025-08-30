@@ -1,13 +1,13 @@
-import OpenAI from "openai";
-import { jsPDF } from "jspdf";
-import {
+const OpenAI = require("openai");
+const { jsPDF } = require("jspdf");
+const {
   Document,
   Packer,
   Paragraph,
   TextRun,
   HeadingLevel,
   AlignmentType,
-} from "docx";
+} = require("docx");
 
 /**
  * Generate a professional sales proposal using OpenAI API
@@ -18,7 +18,7 @@ import {
  * @param {string} extraDetails - Additional context/details for the AI
  * @returns {Promise<string>} Generated proposal content
  */
-export async function generateProposal(
+async function generateProposal(
   apiKey,
   projectDetails,
   projectName,
@@ -82,7 +82,7 @@ export async function generateProposal(
  * @param {string} extraDetails - Additional context/details for the AI
  * @returns {Promise<string>} Generated agreement content
  */
-export async function generateAgreement(
+async function generateAgreement(
   apiKey,
   projectDetails,
   projectName,
@@ -145,7 +145,7 @@ export async function generateAgreement(
  * @param {string} filename - Name of the PDF file (without .pdf extension)
  * @returns {Promise<Uint8Array>} PDF as Uint8Array
  */
-export async function generatePDF(htmlContent, filename = "document") {
+async function generatePDF(htmlContent, filename = "document") {
   try {
     // Create PDF directly with jsPDF
     const pdf = new jsPDF("p", "mm", "a4");
@@ -179,11 +179,11 @@ export async function generatePDF(htmlContent, filename = "document") {
       { label: "Phone:", content: "+91 9211941924" },
       { label: "Website:", content: "www.triostack.in" },
       { label: "Email:", content: "info@triostack.in" },
-             {
-         label: "Address:",
-         content:
-           "IIMT LBF, Plot No. 19, 20, near IIMT Group of Colleges, Knowledge Park III, Greater Noida, Uttar Pradesh 201310",
-       },
+      {
+        label: "Address:",
+        content:
+          "IIMT LBF, Plot No. 19, 20, near IIMT Group of Colleges, Knowledge Park III, Greater Noida, Uttar Pradesh 201310",
+      },
     ];
 
     // Line 1: CIN, Phone, Website (centered)
@@ -274,10 +274,10 @@ export async function generatePDF(htmlContent, filename = "document") {
     // Line 3: Address (centered) - ULTIMATE FIX
     yPosition += lineHeight;
 
-         // Use a much smaller max width to ensure no clipping
-     const maxAddressWidth = 110; // Further reduced from 130 to 110 for much better right margin
-     const fullAddress =
-       "IIMT LBF, Plot No. 19, 20, near IIMT Group of Colleges, Knowledge Park III, Greater Noida, Uttar Pradesh 201310";
+    // Use a much smaller max width to ensure no clipping
+    const maxAddressWidth = 110; // Further reduced from 130 to 110 for much better right margin
+    const fullAddress =
+      "IIMT LBF, Plot No. 19, 20, near IIMT Group of Colleges, Knowledge Park III, Greater Noida, Uttar Pradesh 201310";
 
     // Split the address content only (without the label)
     const addressLines = pdf.splitTextToSize(fullAddress, maxAddressWidth);
@@ -378,7 +378,7 @@ export async function generatePDF(htmlContent, filename = "document") {
  * @param {string} filename - Name of the DOC file (without .docx extension)
  * @returns {Promise<Uint8Array>} DOC as Uint8Array
  */
-export async function generateDOC(content, filename = "document") {
+async function generateDOC(content, filename = "document") {
   try {
     // Split content into paragraphs
     const paragraphs = content.split("\n\n").filter((p) => p.trim());
@@ -456,11 +456,11 @@ export async function generateDOC(content, filename = "document") {
                   size: 18,
                   bold: true,
                 }),
-                                   new TextRun({
-                     text: "IIMT LBF, Plot No. 19, 20, near IIMT Group of Colleges, Knowledge Park III, Greater Noida, Uttar Pradesh 201310",
-                     size: 18,
-                     bold: false,
-                   }),
+                new TextRun({
+                  text: "IIMT LBF, Plot No. 19, 20, near IIMT Group of Colleges, Knowledge Park III, Greater Noida, Uttar Pradesh 201310",
+                  size: 18,
+                  bold: false,
+                }),
               ],
               alignment: AlignmentType.CENTER,
               spacing: { after: 400 },
@@ -507,7 +507,7 @@ export async function generateDOC(content, filename = "document") {
  * @param {string} filename - Name of the PDF file (without .pdf extension)
  * @returns {Promise<Uint8Array>} PDF as Uint8Array
  */
-export async function generateProposalPDF(
+async function generateProposalPDF(
   apiKey,
   projectDetails,
   projectName,
@@ -547,7 +547,7 @@ export async function generateProposalPDF(
  * @param {string} filename - Name of the PDF file (without .pdf extension)
  * @returns {Promise<Uint8Array>} PDF as Uint8Array
  */
-export async function generateAgreementPDF(
+async function generateAgreementPDF(
   apiKey,
   projectDetails,
   projectName,
@@ -589,7 +589,7 @@ export async function generateAgreementPDF(
  * @param {string} filename - Name of the DOC file (without .docx extension)
  * @returns {Promise<Uint8Array>} DOC as Uint8Array
  */
-export async function generateProposalDOC(
+async function generateProposalDOC(
   apiKey,
   projectDetails,
   projectName,
@@ -629,7 +629,7 @@ export async function generateProposalDOC(
  * @param {string} filename - Name of the DOC file (without .docx extension)
  * @returns {Promise<Uint8Array>} DOC as Uint8Array
  */
-export async function generateAgreementDOC(
+async function generateAgreementDOC(
   apiKey,
   projectDetails,
   projectName,
@@ -661,8 +661,8 @@ export async function generateAgreementDOC(
   }
 }
 
-// Default export for backward compatibility
-export default {
+// Export all functions for CommonJS compatibility
+module.exports = {
   generateProposal,
   generateAgreement,
   generatePDF,
