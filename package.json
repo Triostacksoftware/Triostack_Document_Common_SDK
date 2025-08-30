@@ -28,10 +28,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Triostacksoftware/Triostack-Document-SDK"
+    "url": "https://github.com/Triostacksoftware/Triostack_Document_Common_SDK"
   },
   "bugs": {
-    "url": "https://github.com/Triostacksoftware/Triostack-Document-SDK"
+    "url": "https://github.com/Triostacksoftware/Triostack_Document_Common_SDK"
   },
-  "homepage": "https://github.com/Triostacksoftware/Triostack-Document-SDK"
+  "url": "https://github.com/Triostacksoftware/Triostack_Document_Common_SDK"
 }
